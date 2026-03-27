@@ -122,3 +122,13 @@ All participants are now broadcast room updates on join/leave. Ensure both clien
 ## License
 
 This project is for educational and development purposes.
+
+## Some Screen Shots 
+<img width="1919" height="913" alt="Screenshot 2026-03-27 143545" src="https://github.com/user-attachments/assets/4d712c87-e5df-4e84-b1ae-72e4425fe737" />
+<img width="1919" height="913" alt="Screenshot 2026-03-27 143622" src="https://github.com/user-attachments/assets/9087eb59-c9f5-4160-a917-5baea2d28bb6" />
+<img width="1919" height="908" alt="Screenshot 2026-03-27 143740" src="https://github.com/user-attachments/assets/3712a1a6-138e-43e3-bcaa-b8ce33391987" />
+<img width="389" height="817" alt="Screenshot 2026-03-27 143805" src="https://github.com/user-attachments/assets/3637991e-f744-46e7-93c7-50c93fa5a0df" />
+<img width="224" height="799" alt="Screenshot 2026-03-27 154208" src="https://github.com/user-attachments/assets/0af011fe-a810-4d7e-941a-c84f0cb4b7bc" />
+
+<img width="1918" height="911" alt="Screenshot 2026-03-27 160317" src="https://github.com/user-attachments/assets/ffc30d0d-addf-48af-b098-947b266afb45" />
+
