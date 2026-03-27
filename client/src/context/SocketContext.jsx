@@ -1,16 +1,21 @@
 import React, { createContext, useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import socketIoClient from 'socket.io-client';
-import { useClient, useMicrophoneAndCameraTracks } from '../AgoraSetup'
-
+import { useClient, useMicrophoneAndCameraTracks } from '../AgoraSetup';
 
  
 export const SocketContext = createContext();
 
 const WS = 'http://localhost:6001';
 
-const socket = socketIoClient(WS);
+let socket = null;
 
+try {
+  socket = socketIoClient(WS);
+} catch (err) {
+  console.error('Failed to initialize Socket.IO:', err);
+  socket = { on: () => {}, off: () => {}, emit: () => {} }; // Fallback
+}
 
 
 export const SocketContextProvider =  ({children}) => {
@@ -21,41 +26,38 @@ export const SocketContextProvider =  ({children}) => {
   const [inCall, setInCall] = useState(false);
   const [users, setUsers] = useState([]);
   const [start, setStart] = useState(false);
+
   const client = useClient();
   const { ready, tracks } = useMicrophoneAndCameraTracks();
-
 
   const [screenTrack, setScreenTrack] = useState(null);
 
   const [participants, setParticipants] = useState({});
 
-
   const [myMeets, setMyMeets] = useState([]);
-
 
   const [participantsListOpen, setParticipantsListOpen] = useState(false);
   const [chatsContainerOpen, setChatsContainerOpen] = useState(false);
 
-
   const [newMeetType, setNewMeetType] = useState('instant');
-  
+
   useEffect(()=>{
+    if (!socket || !socket.on) return;
+    
     const onRoomCreated = ({roomId, meetType}) => {
-
       if (meetType === 'instant'){
-
         navigate(`/meet/${roomId}`);
-
       }else if(meetType === 'scheduled'){
         navigate(`/profile`);
       }
-      
     };
 
     socket.on('room-created', onRoomCreated);
 
     return () => {
-      socket.off('room-created', onRoomCreated);
+      if (socket && socket.off) {
+        socket.off('room-created', onRoomCreated);
+      }
     };
 
   }, [navigate]);
@@ -63,7 +65,7 @@ export const SocketContextProvider =  ({children}) => {
 
   
   return (
-    <SocketContext.Provider  value={{myMeets, setMyMeets, newMeetType, setNewMeetType, participants, setParticipants, userId, socket, inCall, setInCall, ready, tracks, screenTrack, setScreenTrack, client, users, setUsers, start, setStart, participantsListOpen, setParticipantsListOpen, chatsContainerOpen, setChatsContainerOpen}} >{children}</SocketContext.Provider>
+    <SocketContext.Provider  value={{myMeets, setMyMeets, newMeetType, setNewMeetType, participants, setParticipants, userId, socket: socket || {}, inCall, setInCall, ready, tracks, screenTrack, setScreenTrack, client, users, setUsers, start, setStart, participantsListOpen, setParticipantsListOpen, chatsContainerOpen, setChatsContainerOpen}} >{children}</SocketContext.Provider>
   )
 }
 

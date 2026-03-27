@@ -7,7 +7,25 @@ const token = null;
 export const config = { mode: "rtc", codec: "vp8", appId: appId, token: token };
 export const useClient = createClient(config);
 export const useMicrophoneAndCameraTracks = createMicrophoneAndCameraTracks();
-export const useScreenVideoTrack = createScreenVideoTrack();
 
+// Lazy create screen video track to avoid initialization errors
+export const getScreenVideoTrack = () => {
+  try {
+    return createScreenVideoTrack();
+  } catch (err) {
+    console.error('Failed to initialize screen video track:', err);
+    return null;
+  }
+};
 
-export const rtmClient = AgoraRTM.createInstance(appId);
+let rtmClientInstance = null;
+export const getRtmClient = () => {
+  if (!rtmClientInstance) {
+    try {
+      rtmClientInstance = AgoraRTM.createInstance(appId);
+    } catch (err) {
+      console.error('Failed to create RTM client:', err);
+    }
+  }
+  return rtmClientInstance;
+};
